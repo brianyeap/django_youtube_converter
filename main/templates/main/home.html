@@ -1,0 +1,93 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" href="{% static 'styles.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <style>
+        html {
+          scroll-behavior: smooth;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="row">
+        <div class="col-md-12">
+            <div class="main-todo-input-wrap">
+                <div class="main-todo-input fl-wrap">
+                    <form method="post">
+                        {% csrf_token %}
+                        <h1 class="col-md-12 text-center mb-3 mt-3">Add songs</h1>
+                        <div class="main-todo-input-item">
+                            {{form.name}}
+                        </div>
+                        <div class="main-todo-input-item">
+                            {{form.url}}
+                        </div>
+
+                        <button class="btn btn-primary col-md-12" type="submit">ADD</button>
+
+                        <p class=" text-center"><a href="#downloaded"class="col-md-12" >Downloaded</a></p>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="main-todo-input-wrap">
+                {% for video in video_ids %}
+                    {% for video_id in video.0 %}
+                        <div class="main-todo-input fl-wrap todo-listing">
+                            <ul class="list-items">
+                                <li class="text-center">
+                                    <h2>{{video_id.1}} {% if video_id.2 %}<i class='fa fa-check' style="color: green;"></i>{% endif %}</h2>
+                                    <iframe src="https://www.yt-download.org/api/button/mp3/{{video_id.0}}" width="100%" height="100px" scrolling="no" style="border:none;"></iframe>
+                                    {% if video_id.2 %}
+                                        <a href="{% url 'mark_un_downloaded' video_id.3 %}" class="container btn btn-warning mb-1">Un-Downloaded <i class='fa fa-download'></i></a>
+                                    {% else %}
+                                        <a href="{% url 'mark_downloaded' video_id.3 %}" class="container btn btn-success mb-1">Downloaded <i class='fa fa-download'></i></a>
+                                    {% endif %}
+                                    <a href="{% url 'delete_video' video_id.3 %}" class="container btn btn-danger">Delete <i class='fa fa-trash'></i></a>
+                                </li>
+                            </ul>
+
+                        </div>
+                    {% endfor %}
+                {% endfor %}
+                <div class="main-todo-input fl-wrap todo-listing" id="downloaded">
+                    <ul class="list-items">
+                        <li class="text-center">
+                            <h2>Downloaded</h2>
+                        </li>
+                    </ul>
+                </div>
+                {% for video in video_ids %}
+                    {% for video_id in video.1 %}
+                        <div class="main-todo-input fl-wrap todo-listing">
+                            <ul class="list-items">
+                                <li class="text-center">
+                                    <h2>{{video_id.1}} {% if video_id.2 %}<i class='fa fa-check' style="color: green;"></i>{% endif %}</h2>
+                                    {% if video_id.2 %}
+                                        <a href="{% url 'mark_un_downloaded' video_id.3 %}" class="container btn btn-warning mb-1">Un-Downloaded <i class='fa fa-download'></i></a>
+                                    {% else %}
+                                        <a href="{% url 'mark_downloaded' video_id.3 %}" class="container btn btn-success mb-1">Downloaded <i class='fa fa-download'></i></a>
+                                    {% endif %}
+                                    <a href="{% url 'delete_video' video_id.3 %}" class="container btn btn-danger">Delete <i class='fa fa-trash'></i></a>
+                                </li>
+                            </ul>
+
+                        </div>
+                    {% endfor %}
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+    </div>
+</body>
+</html>
