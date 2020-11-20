@@ -3,8 +3,20 @@ from .models import VideoUrl
 from urllib.parse import urlparse, parse_qs
 from .forms import CreateVideoForm
 
+# API
+from rest_framework.decorators import api_view
+from rest_framework.response import Response
+from .serializers import SongsSerializers
 
 # Create your views here.
+
+
+@api_view(['GET'])
+def api_get_song(request):
+    songs = VideoUrl.objects.all()
+    serializers = SongsSerializers(songs, many=True)
+
+    return Response(serializers.data)
 
 
 def home(request):
