@@ -3,4 +3,4 @@
 
 If you want to contribute and make it better feel free to do so!
 
-This allows you to convert Youtube video to mp3, and you can upload songs using your phone and download it later using computer.
+This allows you to convert Youtube video to mp3, and you can upload songs using your phone and download it later using computer
